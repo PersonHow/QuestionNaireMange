@@ -24,7 +24,7 @@
             <div class="btnArea">
 
                 <button type="button" @click="$emit('startWrite')">
-                    <i class="fa-solid fa-pen-to-square"></i>&nbsp;填寫問卷</button>
+                    <i class="fa-solid fa-pen-to-square"></i>&nbsp;查看問卷</button>
                 <button type="button"><i class="fa-solid fa-chart-line"></i>&nbsp;查看統計</button>
             </div>
         </div>
@@ -53,6 +53,7 @@
         display: flex;
         flex-direction: column;
         padding: 20px;
+
         .fa-xmark {
             position: absolute;
             right: 1dvw;
@@ -61,36 +62,40 @@
             color: rgb(75, 112, 73);
             transition: all 0.1s linear;
 
-            &:hover{
+            &:hover {
                 color: rgb(113, 156, 111);
                 scale: 1.15;
             }
 
-            &:active{
-                scale:0.95;
+            &:active {
+                scale: 0.95;
             }
         }
 
         .blockSlot {
-            width: 100%;
+            width: 80%;
             height: 20%;
             font-size: 1dvw;
             color: rgb(75, 112, 73);
-            margin: 1dvh;
+            margin: 1dvh 5%;
         }
 
-        .surveyId{
+        .surveyId {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
+            align-items: center;
             height: 10%;
         }
-        .title{
+
+        .title {
             height: 10%;
         }
-        .content{
+
+        .content {
             height: 40%;
         }
-        .btnArea{
+
+        .btnArea {
             position: absolute;
             bottom: 0;
             width: 100%;
@@ -99,14 +104,29 @@
             justify-content: space-around;
             margin-bottom: 2%;
 
-            button{
+            button {
                 font-size: 1.5dvw;
+                font-weight: 700;
                 width: 12dvw;
                 height: 100%;
                 background: none;
                 border: none;
+                cursor: pointer;
+                transition: all 0.2s;
+                &:hover {
+                    //  圖示相關動畫
+                    color: rgb(227, 245, 222);
+                    text-shadow: 1px 0px 10px rgb(18, 83, 15),
+                        0px 0px 5px rgb(18, 83, 15);
 
-                
+                    scale: 1.15;
+                }
+
+                &:active{
+                    color: black;
+                    text-shadow: none   ;
+                    scale: 0.95;
+                }
             }
         }
 

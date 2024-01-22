@@ -2,7 +2,7 @@
 import { mapActions } from 'pinia';
 import location from '../stores/location';
 import { RouterLink } from 'vue-router';
-import modal from '../components/Modal.vue';
+import modal from '../components/modal.vue';
 export default {
   data() {
     return {
@@ -83,8 +83,8 @@ export default {
       this.pagination(this.arr, nowPage)
       this.currentIndex = nowPage
     },
-    writeSurvey(id) {
-      this.$router.push(`/AnsView/${id}`)
+    showSurvey(id) {
+      this.$router.push(`/ShowView/${id}`)
     },
     controlModal(target) {
       this.modalObject = target;
@@ -97,7 +97,7 @@ export default {
     modal
   },
   props: [
-
+    'show'
   ],
   mounted() {
     this.setLocation(1)
@@ -116,7 +116,7 @@ export default {
   <div class="questionArea">
     <!-- <button type="button" @click="pagination(this.arr)">BTN</button> -->
     <div class="question" v-for="(item, index) in dataArr">
-      <!-- <div class="surveyBlock" @click="writeSurvey(item.surveyId)"> -->
+      <input type="checkbox" :class="{'showInput': this.show === true}">
       <div class="surveyBlock" @click="this.controlModal(item)">
         <span class="surveyTitle">SurveyNum:{{ item.surveyId }}</span>
         <span class="surveyText">問卷標題:{{ item.surveyTitle }}</span>
@@ -124,7 +124,7 @@ export default {
         <span class="surveyText">時間:{{ item.surveyStartTime }}&nbsp;~&nbsp;{{ item.surveyEndTime }}</span>
       </div>
     </div>
-    <modal v-if="this.openModal" @closeModal="this.controlModal()" @startWrite="writeSurvey(item.surveyId)">
+    <modal v-if="this.openModal" @closeModal="this.controlModal()" @startWrite="showSurvey(this.modalObject.surveyId)">
       <template v-slot:surveyId>
         <h2>SurveyNum&nbsp;:&nbsp;{{ this.modalObject.surveyId }}</h2>
       </template>
@@ -132,10 +132,10 @@ export default {
         <h2>時間&nbsp;:&nbsp;{{ this.modalObject.surveyStartTime }}&nbsp;~&nbsp;{{ this.modalObject.surveyEndTime }}</h2>
       </template>
       <template v-slot:condition>
-        <h2>狀態&nbsp;:</h2>
-        <div class="contentCondition" :class="{ 'redText': this.modalObject.surveyCondition !== '開放中' }">
-          {{ this.modalObject.surveyCondition }}
-        </div>
+        <span class="contentCondition">狀態&nbsp;:</span>
+          <span class="contentCondition" :class="{ 'redText': this.modalObject.surveyCondition !== '開放中' }">
+            {{ this.modalObject.surveyCondition }}
+          </span>
       </template>
       <template v-slot:title>
         <h2>問卷標題&nbsp;:&nbsp;{{ this.modalObject.surveyTitle }}</h2>

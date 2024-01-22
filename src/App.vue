@@ -16,7 +16,7 @@ console.log(show.value)
     </div>
     <div class="content">
 
-      <RouterView />
+      <RouterView :show="show"/>
     </div>
   </div>
 </template>
