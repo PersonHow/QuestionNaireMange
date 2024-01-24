@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="checkInfo" v-if="this.changePage == true">
-        <ResCheck @backRes="this.backHome()" ></ResCheck>
+        <ResCheck @backRes="this.backHome()" :reserInfo="this.objSurvey.reserInfo" :replyInfo="this.objSurvey.replyInfo"></ResCheck>
     </div>
 </template>
 <script>
@@ -26,7 +26,25 @@ export default {
         },
         getNum(item) {
             console.log(item)
-            this.objSurvey = item
+            // 若問卷是記名的，取得填寫者的資訊
+            if(this.surveyNamed){
+                fetch("http://localhost:8080/questionNaire/getPersonalInfo",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        personalId:item.personalId
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    this.objSurvey.reserInfo = data;
+                    this.objSurvey.replyInfo = item
+                })
+                .catch(err => console.log(err))
+
+            }
             this.changePage = !this.changePage
         },
         showRePlys() {
@@ -49,7 +67,8 @@ export default {
         }
     },
     props: [
-        'surveyId'
+        'surveyId',
+        'surveyNamed'
     ],
     components: {
         ResCheck
@@ -75,7 +94,7 @@ export default {
         width: 95%;
         height: 90%;
         border: 0.5px solid rgb(0, 0, 0, 0.4);
-        border-radius: 5px;
+        border-radius: 8px;
         color: rgb(75, 112, 73);
         box-shadow:
             0px 0px 8px rgb(0, 0, 0, 0.2),

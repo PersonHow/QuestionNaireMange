@@ -114,7 +114,6 @@ export default {
 
 <template>
   <div class="questionArea">
-    <!-- <button type="button" @click="pagination(this.arr)">BTN</button> -->
     <div class="question" v-for="(item, index) in dataArr">
       <input type="checkbox" :class="{'showInput': this.show === true}">
       <div class="surveyBlock" @click="this.controlModal(item)">

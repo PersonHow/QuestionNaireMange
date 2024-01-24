@@ -49,7 +49,7 @@
         position: absolute;
         top: 45dvh;
         left: 20dvw;
-        border-radius: 5px;
+        border-radius: 1dvw;
         display: flex;
         flex-direction: column;
         padding: 20px;

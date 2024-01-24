@@ -3,8 +3,7 @@
 
         <div class="navBar">
             <h1 style="cursor: default;">SerialNum：{{ this.$route.params.id }}</h1>
-            <h1 :class="{ 'lightText': this.location == 1 }" @click="this.change(1)">
-                SurveyTitle</h1>
+            <h1 :class="{ 'lightText': this.location == 1 }" @click="this.change(1)">SurveyTitle</h1>
             <h1 :class="{ 'lightText': this.location == 2 }" @click="this.change(2)">SurveyQuestion</h1>
             <h1 :class="{ 'lightText': this.location == 3 }" @click="this.change(3)">SurveyResponse</h1>
             <h1 :class="{ 'lightText': this.location == 4 }" @click="this.change(4)">SurveyTotal</h1>
@@ -19,7 +18,7 @@
 
             <ShowQuestion v-if="this.location == 2" v-model:questions="this.surveyInfo.surveyQuestions"
                 v-model:answers="this.surveyInfo.surveyAnswers" />
-            <ShowRes v-if="this.location == 3" :surveyId="this.surveyInfo.surveyId"/>
+            <ShowRes v-if="this.location == 3" :surveyId="this.surveyInfo.surveyId" :surveyNamed="this.surveyInfo.surveyNamed"/>
             <ShowTotal v-if="this.location == 4" />
         </div>
     </div>
