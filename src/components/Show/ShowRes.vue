@@ -7,7 +7,9 @@
         </div>
     </div>
     <div class="checkInfo" v-if="this.changePage == true">
-        <ResCheck @backRes="this.backHome()" :reserInfo="this.objSurvey.reserInfo" :replyInfo="this.objSurvey.replyInfo"></ResCheck>
+        <ResCheck @backRes="this.backHome()" :reserInfo="this.objSurvey" :item="this.resItem" :surveyNamed="this.replyNamed"
+            :replyAnsArr="this.replyAnsArr"></ResCheck>
+        <!-- <ResCheck @backRes="this.backHome()" :info="this.objSurvey"></ResCheck> -->
     </div>
 </template>
 <script>
@@ -17,7 +19,12 @@ export default {
         return {
             replyArr: [],
             changePage: false,
-            objSurvey:{},
+            objSurvey: {
+
+            },
+            replyAnsArr: [],
+            resItem: {},
+            replyNamed: true
         }
     },
     methods: {
@@ -26,26 +33,34 @@ export default {
         },
         getNum(item) {
             console.log(item)
+            this.resItem = item;
+            this.replyNamed = this.surveyNamed;
+            this.replyAnsArr = item.surveyResAns.split('|')
             // 若問卷是記名的，取得填寫者的資訊
-            if(this.surveyNamed){
-                fetch("http://localhost:8080/questionNaire/getPersonalInfo",{
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    body:JSON.stringify({
-                        personalId:item.personalId
-                    })
+
+            fetch("http://localhost:8080/questionNaire/getPersonalInfo", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    personalId: item.personalId
                 })
+            })
                 .then(res => res.json())
                 .then(data => {
-                    this.objSurvey.reserInfo = data;
-                    this.objSurvey.replyInfo = item
+                    if (this.surveyNamed) {
+                        this.objSurvey = data.personal;
+                        console.log(this.objSurvey);
+                    } else {
+                        this.objSurvey.personalId = item.personalId 
+                    }
+                    this.changePage = !this.changePage
                 })
                 .catch(err => console.log(err))
 
-            }
-            this.changePage = !this.changePage
+
+
         },
         showRePlys() {
             fetch("http://localhost:8080/questionNaire/getSurveyReplys", {
@@ -68,7 +83,8 @@ export default {
     },
     props: [
         'surveyId',
-        'surveyNamed'
+        'surveyNamed',
+        'answers'
     ],
     components: {
         ResCheck

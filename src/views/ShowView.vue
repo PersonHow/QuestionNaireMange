@@ -18,7 +18,8 @@
 
             <ShowQuestion v-if="this.location == 2" v-model:questions="this.surveyInfo.surveyQuestions"
                 v-model:answers="this.surveyInfo.surveyAnswers" />
-            <ShowRes v-if="this.location == 3" :surveyId="this.surveyInfo.surveyId" :surveyNamed="this.surveyInfo.surveyNamed"/>
+            <ShowRes v-if="this.location == 3" :surveyId="this.surveyInfo.surveyId"
+                :surveyNamed="this.surveyInfo.surveyNamed" :answers="this.surveyInfo.surveyAnswers" />
             <ShowTotal v-if="this.location == 4" />
         </div>
     </div>
@@ -93,6 +94,7 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
+    box-shadow: 0px 2px 2px 0 rgba(163, 163, 162, 0.5) inset;
 
     .navBar {
         width: 20%;
@@ -105,15 +107,15 @@ export default {
         h1 {
             width: 100%;
             text-align: center;
-            transition: all 0.4s;
-            margin-top: 40px;
-            margin-bottom: 20px;
+            transition: all 0.4s linear;
+            margin-top: 4dvh;
+            margin-bottom: 4dvh;
             cursor: pointer;
+            font-size: 2dvw;
 
             &:hover {
-                border-top: 0.2px solid rgb(129, 129, 129, 0.5);
-                border-bottom: 0.2px solid rgb(130, 130, 130, 0.5);
-                transition: none;
+                scale: 1.05;
+                transition: all 0.1s linear;
             }
         }
 
@@ -132,13 +134,15 @@ export default {
             ;
             cursor: pointer;
             padding-top: 25px;
-            margin-top: 20px;
+            margin-top: 4dvh;
             transition: all 0.5s;
             border: none;
             animation: lightingText linear infinite 4000ms;
 
             &:hover {
+                scale: 1;
                 border: none;
+
             }
         }
 

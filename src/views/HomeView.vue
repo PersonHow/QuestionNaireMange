@@ -167,6 +167,7 @@ $bg: rgb(255, 255, 255);
   justify-content: center;
   align-items: start;
   padding-top: 30px;
+  box-shadow: 0px 2px 2px 0 rgba(163, 163, 162, 0.5) inset;
 
   .question {
     width: 30%;
