@@ -115,15 +115,17 @@ export default {
 <template>
   <div class="questionArea">
     <div class="question" v-for="(item, index) in dataArr">
-      <input type="checkbox" :class="{'showInput': this.show === true}">
+      <input type="checkbox" :class="{ 'showInput': this.show === true }">
       <div class="surveyBlock" @click="this.controlModal(item)">
         <span class="surveyTitle">SurveyNum:{{ item.surveyId }}</span>
         <span class="surveyText">問卷標題:{{ item.surveyTitle }}</span>
-        <span class="surveyText">狀態:{{ item.surveyCondition }}</span>
+        <span class="surveyText" :class="{ 'redText': item.surveyCondition == '開放中' }">狀態:{{
+          item.surveyCondition }}</span>
         <span class="surveyText">時間:{{ item.surveyStartTime }}&nbsp;~&nbsp;{{ item.surveyEndTime }}</span>
       </div>
     </div>
-    <modal v-if="this.openModal" @closeModal="this.controlModal()" @startWrite="showSurvey(this.modalObject.surveyId)">
+    <modal v-if="this.openModal" @closeModal="this.controlModal()" @startWrite="showSurvey(this.modalObject.surveyId)"
+      :surveyCondition="this.modalObject.surveyCondition">
       <template v-slot:surveyId>
         <h2>SurveyNum&nbsp;:&nbsp;{{ this.modalObject.surveyId }}</h2>
       </template>
@@ -132,9 +134,9 @@ export default {
       </template>
       <template v-slot:condition>
         <span class="contentCondition">狀態&nbsp;:</span>
-          <span class="contentCondition" :class="{ 'redText': this.modalObject.surveyCondition !== '開放中' }">
-            {{ this.modalObject.surveyCondition }}
-          </span>
+        <span class="contentCondition" :class="{ 'redText': this.modalObject.surveyCondition == '開放中' }">
+          {{ this.modalObject.surveyCondition }}
+        </span>
       </template>
       <template v-slot:title>
         <h2>問卷標題&nbsp;:&nbsp;{{ this.modalObject.surveyTitle }}</h2>
@@ -168,12 +170,14 @@ $bg: rgb(255, 255, 255);
   align-items: start;
   padding-top: 30px;
   box-shadow: 0px 2px 2px 0 rgba(163, 163, 162, 0.5) inset;
+  transition: all 0.2s linear;
 
   .question {
     width: 30%;
     height: 40%;
     display: flex;
     margin: 0 20px;
+
 
     input {
       width: 40px;

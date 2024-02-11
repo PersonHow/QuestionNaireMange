@@ -1,11 +1,11 @@
 <template>
     <div class="questTitle">
         <label for="">問卷題目</label>
-        <input type="text" class="titleInput" id="titleInput">
+        <input type="text" class="titleInput" id="titleInput" :disabled="this.surveyCondition !== '尚未開始'">
         <label for="">必填</label>
-        <input type="checkbox" class="needed" id="needed">
+        <input type="checkbox" class="needed" id="needed" :disabled="this.surveyCondition !== '尚未開始'">
         <label for="">題型</label>
-        <select name="" id="type" class="type" v-model="this.typeVal">
+        <select name="" id="type" class="type" v-model="this.typeVal" :disabled="this.surveyCondition !== '尚未開始'">
             <option value="">請選擇</option>
             <option v-for="item in typeArr" :value="item">{{ item }}</option>
         </select>
@@ -14,10 +14,12 @@
         <label>選項</label>
         <div class="inputArea">
             <span>(&nbsp;多個答案請以 ; 分隔。ex:one;two;three;&nbsp; 代表第一個答案是 one 以此類推&nbsp;)</span>
-            <textarea name="" id="optionAns" cols="30" rows="10" :disabled="this.typeVal == '簡答'" value=""
+            <textarea name="" id="optionAns" cols="30" rows="10"
+                :disabled="this.typeVal == '簡答' || this.surveyCondition !== '尚未開始'" value=""
                 v-model="this.optionAns"></textarea>
         </div>
-        <button type="button" @click="this.joinOptionsAndQuestion()" v-show="this.btnType == false">JOIN</button>
+        <button type="button" @click="this.joinOptionsAndQuestion()" v-show="this.btnType == false"
+            :class="{ 'blockButton': this.surveyCondition !== '尚未開始' }">JOIN</button>
         <button type="button" @click="this.editDone()" v-show="this.btnType == true">Edit</button>
     </div>
     <table class="optionTable">
@@ -34,7 +36,8 @@
 
         <tbody>
             <tr class="tabelTr" v-for="(item, index) in this.tableData">
-                <td class="tableCheck"><input type="checkbox" name="index" v-model="this.deleteIndex" :value=index></td>
+                <td class="tableCheck"><input type="checkbox" name="index" v-model="this.deleteIndex" :value=index
+                        :disabled="this.surveyCondition !== '尚未開始'"></td>
                 <td class="tableNum">{{ index + 1 }}</td>
                 <td class='tableTitle'>{{ item.que.split(",")[0] }}</td>
                 <td class="tableType">{{ item.ans.split(",")[0] }}</td>
@@ -43,7 +46,8 @@
             </tr>
         </tbody>
     </table>
-    <i class="fa-regular fa-trash-can" v-show="this.trashType == false" @mousemove="this.trashType = !this.trashType"></i>
+    <i class="fa-regular fa-trash-can" v-show="this.trashType == false" @mousemove="this.trashType = !this.trashType"
+        :class="{ 'blockButton': this.surveyCondition !== '尚未開始' }"></i>
     <i class="fa-solid fa-trash-can" v-show="this.trashType == true" @mouseleave="this.trashType = !this.trashType"></i>
 </template>
 <script>
@@ -62,11 +66,17 @@ export default {
             quesIndex: "",
             deleteIndex: [],
             trashType: false,
+            optionAns: ""
         }
     },
     props: [
         "questions",
-        "answers"
+        "answers",
+        "surveyCondition"
+    ],
+    emits: [
+        'update:questions',
+        'update:answers'
     ],
     methods: {
         joinOptionsAndQuestion() {
@@ -142,7 +152,7 @@ export default {
             this.btnType = true;
         },
         editDone() {
-        // 捕捉到問題名稱與是否必填的標籤
+            // 捕捉到問題名稱與是否必填的標籤
             const title = document.querySelector("#titleInput");
             const needed = document.querySelector("#needed");
 
@@ -456,5 +466,11 @@ export default {
             }
         }
     }
+}
+
+.blockButton {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.4;
 }
 </style>

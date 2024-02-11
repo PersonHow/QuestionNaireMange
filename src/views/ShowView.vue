@@ -5,19 +5,22 @@
             <h1 style="cursor: default;">SerialNum：{{ this.$route.params.id }}</h1>
             <h1 :class="{ 'lightText': this.location == 1 }" @click="this.change(1)">SurveyTitle</h1>
             <h1 :class="{ 'lightText': this.location == 2 }" @click="this.change(2)">SurveyQuestion</h1>
-            <h1 :class="{ 'lightText': this.location == 3 }" @click="this.change(3)">SurveyResponse</h1>
-            <h1 :class="{ 'lightText': this.location == 4 }" @click="this.change(4)">SurveyTotal</h1>
-
+            <h1 :class="{ 'lightText': this.location == 3 }" @click="this.change(3)"
+                v-if="this.surveyInfo.surveyCondition !== '尚未開始'">SurveyResponse</h1>
+            <button v-if="this.surveyInfo.surveyCondition == '尚未開始'" @click="this.editSurvey()">Edit&nbsp;Done</button>
+            <h1 :class="{ 'lightText': this.location == 4 }" @click="this.change(4)" v-else>SurveyTotal</h1>
 
         </div>
         <div class="hr"></div>
         <div class="contentShow">
             <ShowTitle v-if="this.location == 1" v-model:title="this.surveyInfo.surveyTitle"
                 v-model:content="this.surveyInfo.surveyContent" v-model:startTime="this.surveyInfo.surveyStartTime"
-                v-model:endTime="this.surveyInfo.surveyEndTime" @checkNamed="giveCheck" :location="this.location" />
+                v-model:endTime="this.surveyInfo.surveyEndTime" @checkNamed="giveCheck" :location="this.location"
+                :surveyCondition="this.surveyInfo.surveyCondition" />
 
             <ShowQuestion v-if="this.location == 2" v-model:questions="this.surveyInfo.surveyQuestions"
-                v-model:answers="this.surveyInfo.surveyAnswers" />
+                v-model:answers="this.surveyInfo.surveyAnswers"
+                :surveyCondition="this.surveyInfo.surveyCondition" />
             <ShowRes v-if="this.location == 3" :surveyId="this.surveyInfo.surveyId"
                 :surveyNamed="this.surveyInfo.surveyNamed" :answers="this.surveyInfo.surveyAnswers" />
             <ShowTotal v-if="this.location == 4" />
@@ -75,6 +78,21 @@ export default {
                     this.surveyInfo = data;
                 })
                 .catch(error => console.log(error))
+        },
+        editSurvey(){
+            console.log(this.surveyInfo)
+            fetch("http://localhost:8080/questionNaire/editSurveyInfo",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(this.surveyInfo)
+            })
+            .then(res => res.json())
+            .then(data =>{
+                console.log(data)
+            })
+            .catch(err => console.log(err))
         }
     },
     mounted() {
@@ -116,6 +134,32 @@ export default {
             &:hover {
                 scale: 1.05;
                 transition: all 0.1s linear;
+            }
+        }
+
+        button {
+            width: 100%;
+            background: none;
+            text-align: center;
+            margin-top: 18dvh;
+            margin-bottom: 2dvh;
+            cursor: pointer;
+            font-size: 3.5dvw;
+            border: none;
+            font-weight: 700;
+            transition: all 0.1s linear;
+            color: rgb(54, 117, 43);
+
+            &:hover {
+                color: rgb(158, 240, 149);
+                text-shadow:
+                    10px 17px 3px rgb(54, 117, 43),
+                ;
+            }
+
+            &:active {
+                color: rgb(54, 117, 43);
+                text-shadow: none;
             }
         }
 
@@ -164,10 +208,12 @@ export default {
 
         50% {
             text-shadow:
-                0px 0px 8px rgb(19, 127, 0),
-                0px 10px 20px rgb(135, 190, 125),
-                -10px 0px 20px rgb(135, 190, 125),
-                0px -10px 20px rgb(135, 190, 125),
+                0px 0px 4px rgb(19, 127, 0),
+                0px 0px 20px rgb(135, 190, 125),
+                0px 20px 20px rgb(135, 190, 125),
+                20px 0px 20px rgb(135, 190, 125),
+                -20px 0px 20px rgb(135, 190, 125),
+                0px -20px 20px rgb(135, 190, 125),
             ;
         }
 

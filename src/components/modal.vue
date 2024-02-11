@@ -1,4 +1,9 @@
 <script>
+export default {
+    props: [
+        'surveyCondition'
+    ]
+}
 </script>
 <template>
     <div class="modalArea">
@@ -23,9 +28,12 @@
 
             <div class="btnArea">
 
-                <button type="button" @click="$emit('startWrite')">
+                <button type="button" @click="$emit('startWrite')" v-if="this.surveyCondition == '尚未開始'">
+                    <i class="fa-solid fa-pen-to-square"></i>&nbsp;編輯問卷</button>
+                <button type="button" @click="$emit('startWrite')" v-else>
                     <i class="fa-solid fa-pen-to-square"></i>&nbsp;查看問卷</button>
-                <button type="button"><i class="fa-solid fa-chart-line"></i>&nbsp;查看統計</button>
+                <button type="button" :class="{ 'blockButton': this.surveyCondition == '尚未開始' }"><i
+                        class="fa-solid fa-chart-line"></i>&nbsp;查看統計</button>
             </div>
         </div>
         <div class="bg"></div>
@@ -113,6 +121,7 @@
                 border: none;
                 cursor: pointer;
                 transition: all 0.2s;
+
                 &:hover {
                     //  圖示相關動畫
                     color: rgb(227, 245, 222);
@@ -122,11 +131,17 @@
                     scale: 1.15;
                 }
 
-                &:active{
+                &:active {
                     color: black;
-                    text-shadow: none   ;
+                    text-shadow: none;
                     scale: 0.95;
                 }
+            }
+
+            .blockButton {
+                pointer-events: none;
+                cursor: default;
+                opacity: 0.4;
             }
         }
 
