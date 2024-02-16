@@ -1,6 +1,7 @@
 <script>
-import { mapActions } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import location from '../stores/location';
+import survey from '../stores/survey';
 import { RouterLink } from 'vue-router';
 import modal from '../components/modal.vue';
 export default {
@@ -20,7 +21,13 @@ export default {
       openModal: false,
       // Modal 中使用的物件
       modalObject: {},
+      // 資料的數量
+      dataNums: undefined
+
     }
+  },
+  computed: {
+    ...mapState(survey, ['searchResult'])
   },
   methods: {
     ...mapActions(location, ["setLocation"]),
@@ -76,11 +83,16 @@ export default {
       const maxData = (currentPage * pageData);
 
       // 針對總資料筆數進行篩選, 要顯示在畫面上的資料 
-      this.dataArr = this.arr.slice(minData, maxData)
-
+      this.dataArr = data.slice(minData, maxData)
+      this.dataNums = data.length
     },
     changePages(nowPage) {
-      this.pagination(this.arr, nowPage)
+      if (this.searchResult !== '') {
+        this.pagination(this.searchResult.surveyLists, nowPage)
+
+      } else {
+        this.pagination(this.arr, nowPage)
+      }
       this.currentIndex = nowPage
     },
     showSurvey(id) {
@@ -103,11 +115,23 @@ export default {
     this.setLocation(1)
   },
   created() {
-    // setInterval(() => {
-    //   this.showAll()
-    // }, 3000);
     this.showAll()
+    if (this.searchResult !== '') {
+      this.pagination(this.searchResult.surveyLists, 1)
+    }
+    // 當搜尋結果的 surveyLists 屬性不等於 undefined 時
+    // 藉由比對資料量來控制顯示結果，這樣就不會跑版
+    setInterval(() => {
+      if (this.searchResult.surveyLists !== undefined) {
+        if (this.dataNums !== this.searchResult.surveyLists.length) {
+          this.changePages(this.currentIndex)
+        }
+      }
+    }, 200)
   },
+  updated() {
+
+  }
 
 }
 </script>

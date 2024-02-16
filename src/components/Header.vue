@@ -9,9 +9,12 @@
             <i class="fa-solid fa-house"></i>
         </RouterLink>
         <div class="searchArea">
-            <n-date-picker v-model:value="this.range" type="daterange" clearable class="dateSelect" />
-            <input type="text" placeholder="搜尋問卷標題">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <n-date-picker v-model:value="this.rangeStart" type="date" clearable class="dateSelect"
+                placeholder="Start Time" />
+            <h1>&nbsp;~&nbsp;</h1>
+            <n-date-picker v-model:value="this.rangeEnd" type="date" clearable class="dateSelect" placeholder="End Time" />
+            <input type="text" placeholder="搜尋問卷標題" v-model="this.titleText">
+            <i class="fa-solid fa-magnifying-glass" @click="this.doSearch()"></i>
         </div>
         <div class="editArea">
             <i class="fa-regular fa-square-plus" @click="$router.push('/AddView')"></i>
@@ -20,15 +23,18 @@
     </div>
 </template>
 <script>
-import { mapState } from 'pinia';
-import location from "../stores/location"
+import { mapState, mapActions } from 'pinia';
+import location from "../stores/location";
+import survey from "../stores/survey";
 import { RouterLink, RouterView } from 'vue-router'
 import { NDatePicker } from 'naive-ui';
 export default {
     data() {
         return {
             showBar: false,
-            range: ""
+            rangeStart: [],
+            rangeEnd: [],
+            titleText: "",
         }
     },
     props: [
@@ -42,13 +48,60 @@ export default {
         NDatePicker
     },
     methods: {
-        transDate() {
-            let startDate = new Date(this.range[0])
-            let endDate = new Date(this.range[1])
-            let startText = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`
-            let endText = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`
-            console.log(startDate)
-            console.log(startText)
+        ...mapActions(survey, ['setSearchValue', 'searchSurveyInfo']),
+        doSearch() {
+            let startText = ""
+            let endText = ""
+            console.log(this.rangeEnd);
+            if (this.range !== null) {
+                let startTime = new Date(this.rangeStart)
+                let endTime = new Date(this.rangeEnd)
+                // 確保月份時間格式小於 10，補上 0 以便符合送入後端的 localDate 格式
+                let startMonth = "";
+                let endMonth = "";
+                if ((startTime.getMonth() + 1) < 10) {
+                    startMonth = `0${startTime.getMonth() + 1}`
+                } else {
+                    startMonth = startTime.getMonth() + 1
+                }
+                if ((endTime.getMonth() + 1) < 10) {
+                    endMonth = `0${endTime.getMonth() + 1}`
+                } else {
+                    endMonth = endTime.getMonth() + 1
+                }
+
+                // 確保日期時間格式小於 10，補上 0 以便符合送入後端的 localDate 格式
+                let startDate = "";
+                let endDate = "";
+                if (startTime.getDate() < 10) {
+                    startDate = `0${startTime.getDate()}`
+                } else {
+                    startDate = startTime.getDate();
+                }
+                if (endTime.getDate() < 10) {
+                    endDate = `0${endTime.getDate()}`
+                } else {
+                    endDate = endTime.getDate();
+                }
+
+                // 將時間格式組成後端需求
+                startText = `${startTime.getFullYear()}-${startMonth}-${startDate}`
+                endText = `${endTime.getFullYear()}-${endMonth}-${endDate}`
+                if (startText == endText || endText == 'NaN-NaN-NaN') {
+                    endText = ""
+                }
+                if (startText == 'NaN-NaN-NaN') {
+                    startText = ""
+                }
+                console.log(startText)
+                console.log(endText)
+            }
+            if (this.rangeStart == "NaN-NaN-NaN" && this.rangeEnd == "NaN-NaN-NaN") {
+                startText = ""
+                endText = ""
+            }
+            this.setSearchValue(this.titleText, startText, endText)
+            this.searchSurveyInfo();
         },
         conDate() {
             const datePicker = document.querySelector(".dateSelect")
@@ -56,9 +109,8 @@ export default {
         }
     },
     updated() {
-        this.transDate()
-    }
-
+        // this.transDate()
+    },
 }
 </script>
 <style lang="scss" scoped>
@@ -78,10 +130,11 @@ $bg: rgb(255, 255, 255);
 
     .searchArea {
         width: 200px;
+        height: 100%;
         position: relative;
 
         .dateSelect {
-            width: 350px;
+            width: 2dvw;
             opacity: 0;
         }
 
@@ -93,10 +146,14 @@ $bg: rgb(255, 255, 255);
             position: absolute;
             color: rgba(100, 102, 100);
             left: 0;
-            top: 15px;
-            font-size: 4dvh;
+            top: 1.5dvh;
+            font-size: 2dvw;
             display: block;
             transition: left 1s;
+        }
+
+        h1 {
+            opacity: 0;
         }
     }
 
@@ -109,8 +166,8 @@ $bg: rgb(255, 255, 255);
 
         .barItem {
             position: absolute;
-            top: 5px;
-            font-size: 28pt;
+            top: 1dvh;
+            font-size: 2.7dvw;
             color: rgba(100, 102, 100);
         }
 
@@ -120,6 +177,7 @@ $bg: rgb(255, 255, 255);
             height: 40px;
             top: 10px;
             left: 10px;
+            font-size: 2dvw;
         }
 
         span {
@@ -174,7 +232,7 @@ $bg: rgb(255, 255, 255);
 
         .barItem {
             // 標題圖示
-            font-size: 3dvw;
+            font-size: 2.7dvw;
             text-shadow: none;
             color: rgba(100, 102, 100);
         }
@@ -237,6 +295,10 @@ $bg: rgb(255, 255, 255);
         position: relative;
         margin-right: 30px;
 
+        h1 {
+            opacity: 1;
+        }
+
         i {
             //放大鏡移動
             position: absolute;
@@ -271,7 +333,7 @@ $bg: rgb(255, 255, 255);
         .dateSelect {
             // 時間欄
             opacity: 1;
-            width: 350px;
+            width: 12dvw;
             animation: textUp linear 1s;
         }
     }
