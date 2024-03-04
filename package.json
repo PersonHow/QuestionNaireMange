@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "echarts": "^5.5.0",
     "naive-ui": "^2.35.0",
     "pinia": "^2.0.32",
     "sass": "^1.69.5",
     "sweetalert2": "^11.10.3",
     "vue": "^3.2.47",
+    "vue-echarts": "^6.6.9",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

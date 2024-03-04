@@ -8,7 +8,8 @@
             <h1 :class="{ 'lightText': this.location == 3 }" @click="this.change(3)"
                 v-if="this.surveyInfo.surveyCondition !== '尚未開始'">SurveyResponse</h1>
             <button v-if="this.surveyInfo.surveyCondition == '尚未開始'" @click="this.editSurvey()">Edit&nbsp;Done</button>
-            <h1 :class="{ 'lightText': this.location == 4 }" @click="this.change(4)" v-else>SurveyTotal</h1>
+            <!-- <button v-else @click="this.editSurvey()">Edit&nbsp;Done</button> -->
+            <h1 v-else :class="{ 'lightText': this.location == 4 }" @click="this.goTotal(this.surveyInfo.surveyId)" >SurveyTotal</h1>
 
         </div>
         <div class="hr"></div>
@@ -23,7 +24,7 @@
                 :surveyCondition="this.surveyInfo.surveyCondition" />
             <ShowRes v-if="this.location == 3" :surveyId="this.surveyInfo.surveyId"
                 :surveyNamed="this.surveyInfo.surveyNamed" :answers="this.surveyInfo.surveyAnswers" />
-            <ShowTotal v-if="this.location == 4" />
+            <!-- <ShowTotal v-if="this.location == 4" :id="this.surveyInfo.surveyId"/> -->
         </div>
     </div>
 </template>
@@ -31,7 +32,7 @@
 import ShowTitle from '../components/Show/ShowTitle.vue';
 import ShowQuestion from '../components/Show/ShowQuestion.vue'
 import ShowRes from '../components/Show/ShowRes.vue';
-import ShowTotal from '../components/Show/ShowTotal.vue';
+// import ShowTotal from '../components/Show/ShowTotal.vue';
 import { computed } from 'vue'
 export default {
     data() {
@@ -47,7 +48,7 @@ export default {
         ShowTitle,
         ShowQuestion,
         ShowRes,
-        ShowTotal
+        // ShowTotal
     },
     watch: {
     },
@@ -93,6 +94,9 @@ export default {
                 console.log(data)
             })
             .catch(err => console.log(err))
+        },
+        goTotal(id){
+            this.$router.push(`/Total/${id}`)
         }
     },
     mounted() {

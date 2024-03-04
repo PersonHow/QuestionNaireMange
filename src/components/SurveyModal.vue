@@ -32,7 +32,7 @@ export default {
                     <i class="fa-solid fa-pen-to-square"></i>&nbsp;編輯問卷</button>
                 <button type="button" @click="$emit('startWrite')" v-else>
                     <i class="fa-solid fa-pen-to-square"></i>&nbsp;查看問卷</button>
-                <button type="button" :class="{ 'blockButton': this.surveyCondition == '尚未開始' }"><i
+                <button type="button" @click="$emit('startTotal')" :class="{ 'blockButton': this.surveyCondition == '尚未開始' }"><i
                         class="fa-solid fa-chart-line"></i>&nbsp;查看統計</button>
             </div>
         </div>

@@ -3,7 +3,7 @@ import { mapState, mapActions } from 'pinia';
 import location from '../stores/location';
 import survey from '../stores/survey';
 import { RouterLink } from 'vue-router';
-import modal from '../components/modal.vue';
+import modal from '../components/SurveyModal.vue';
 export default {
   data() {
     return {
@@ -22,7 +22,7 @@ export default {
       // Modal 中使用的物件
       modalObject: {},
       // 資料的數量
-      dataNums: undefined
+      dataNums: undefined,
 
     }
   },
@@ -101,12 +101,15 @@ export default {
     controlModal(target) {
       this.modalObject = target;
       this.openModal = !this.openModal;
+    },
+    showSurveyTotal(id){
+      this.$router.push(`/Total/${id}`)
     }
 
   },
   components: {
     RouterLink,
-    modal
+    modal,
   },
   props: [
     'show'
@@ -149,7 +152,7 @@ export default {
       </div>
     </div>
     <modal v-if="this.openModal" @closeModal="this.controlModal()" @startWrite="showSurvey(this.modalObject.surveyId)"
-      :surveyCondition="this.modalObject.surveyCondition">
+      @startTotal="showSurveyTotal(this.modalObject.surveyId)" :surveyCondition="this.modalObject.surveyCondition">
       <template v-slot:surveyId>
         <h2>SurveyNum&nbsp;:&nbsp;{{ this.modalObject.surveyId }}</h2>
       </template>
