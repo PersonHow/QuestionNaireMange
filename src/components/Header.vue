@@ -376,8 +376,6 @@ $bg: rgb(255, 255, 255);
 }
 
 
-
-
 @keyframes textUp {
     0% {
         opacity: 0;

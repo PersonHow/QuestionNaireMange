@@ -54,7 +54,7 @@
     </Modal>
 </template>
 <script>
-import Modal from '../modal.vue'
+import Modal from '../SurveyModal.vue'
 import { mapState } from 'pinia'
 import survey from '../../stores/survey'
 export default {

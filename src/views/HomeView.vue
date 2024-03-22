@@ -198,6 +198,8 @@ $bg: rgb(255, 255, 255);
   padding-top: 30px;
   box-shadow: 0px 2px 2px 0 rgba(163, 163, 162, 0.5) inset;
   transition: all 0.2s linear;
+  position: relative;
+  
 
   .question {
     width: 30%;
@@ -319,4 +321,20 @@ $bg: rgb(255, 255, 255);
     color: red;
   }
 }
+
+@media screen and (max-width:1200px) {
+    .questionArea{
+      height: 140%;
+      position: relative;
+
+      .question{
+        height: 25%;
+      }
+
+      .btnArea{
+        position: absolute;
+        bottom: 0;
+      }
+    }
+  }
 </style>
