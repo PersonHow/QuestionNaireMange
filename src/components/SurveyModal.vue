@@ -153,6 +153,7 @@ export default {
         height: 200dvh;
         background: rgba(40, 71, 34, 0.25);
         backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
     }
 }
 </style>

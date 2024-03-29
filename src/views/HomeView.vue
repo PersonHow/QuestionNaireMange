@@ -131,6 +131,8 @@ export default {
         }
       }
     }, 200)
+
+    console.dir(window)
   },
   updated() {
 

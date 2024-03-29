@@ -1,7 +1,7 @@
 <template >
     <div class="closeArea" :class="{ 'showArea': this.show === true }">
         <div class="routeItem barIcon">
-            <span class="barText">動態問券前台</span>
+            <span class="barText">動態問券後台</span>
             <i class="fa-solid fa-server barItem"></i>
         </div>
         <RouterLink to="/" class="routeItem" :class="{ 'locationCss': this.location === 1 }">

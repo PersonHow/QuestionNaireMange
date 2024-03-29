@@ -86,8 +86,8 @@ export default {
     justify-content: center;
 
     h1 {
-        margin-left: 40px;
-        margin-right: 20px;
+        margin-left: 1dvw;
+        margin-right: 1dvw;
     }
 
     input {

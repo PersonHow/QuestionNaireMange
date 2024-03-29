@@ -25,7 +25,8 @@
 </template>
 <script>
 import { mapState, mapActions } from 'pinia';
-import survey from '../../stores/survey'
+import survey from '../../stores/survey';
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -48,7 +49,17 @@ export default {
         addEnd() {
             this.addSurveyInfo()
             console.log("xxx")
-            location.href = "http://localhost:5173/";
+            Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "成功新增問卷",
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+            setTimeout(()=>{
+
+                location.href = `http://${location.host}/`;
+            }, 1200)
         }
     },
 

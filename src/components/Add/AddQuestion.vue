@@ -54,7 +54,7 @@
     </Modal>
 </template>
 <script>
-import Modal from '../SurveyModal.vue'
+import Modal from '../ErrorModal.vue'
 import { mapState } from 'pinia'
 import survey from '../../stores/survey'
 export default {
@@ -320,7 +320,7 @@ export default {
         display: flex;
         flex-direction: column;
         width: 60%;
-        height: 150px;
+        height: 20dvh;
         margin-left: 9%;
         position: absolute;
         top: 0;
