@@ -211,18 +211,19 @@ $bg: rgb(255, 255, 255);
 
 
     input {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
+      width: 1dvw;
+      height: 2dvh;
+      scale: 0;
       opacity: 0;
       transition: all 1s;
     }
 
     .showInput {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 10px;
+      width: 1dvw;
+      height: 2dvh;
+      margin: 1dvh 1dvw;
       opacity: 1;
+      scale: 2;
       transition: all 1s;
     }
 
