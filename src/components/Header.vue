@@ -146,10 +146,10 @@ $bg: rgb(255, 255, 255);
             position: absolute;
             color: rgba(100, 102, 100);
             left: 0;
-            top: 1.5dvh;
-            font-size: 2dvw;
+            top: 2dvh;
+            font-size: 3dvh;
             display: block;
-            transition: left 1s;
+            transition: all 1s;
         }
 
         h1 {
@@ -167,7 +167,7 @@ $bg: rgb(255, 255, 255);
         .barItem {
             position: absolute;
             top: 1dvh;
-            font-size: 2.7dvw;
+            font-size: 3dvw;
             color: rgba(100, 102, 100);
         }
 
@@ -175,9 +175,9 @@ $bg: rgb(255, 255, 255);
             position: absolute;
             width: 40px;
             height: 40px;
-            top: 10px;
+            top: 2dvh;
             left: 10px;
-            font-size: 2dvw;
+            transition: all 0.5s ease-in;
         }
 
         span {
@@ -234,7 +234,9 @@ $bg: rgb(255, 255, 255);
             // 標題圖示
             font-size: 2.7dvw;
             text-shadow: none;
+            top:2dvh;
             color: rgba(100, 102, 100);
+            transition: all 0.5s;
         }
 
         .barText {
@@ -252,16 +254,16 @@ $bg: rgb(255, 255, 255);
             position: absolute;
             width: 40px;
             height: 40px;
-            top: 10px;
+            top: 3dvh;
             left: 10px;
             opacity: 1;
-            transition: opacity 1s;
+            transition: all 1s;
         }
 
         span {
             // Header　移動的動畫
             position: absolute;
-            top: 10px;
+            top: 3dvh;
             left: 25%;
             display: block;
             animation: textUp linear 0.5s;
@@ -302,16 +304,17 @@ $bg: rgb(255, 255, 255);
         i {
             //放大鏡移動
             position: absolute;
-            top: 10px;
-            left: 99%;
-            transition: left 1s;
+            top: 2dvh;
+            left: 100%;
+            transition: all 1s;
             cursor: pointer;
+            scale:1.5;
 
             &:hover {
                 //  圖示相關動畫
                 color: rgb(227, 245, 222);
                 text-shadow: 1px 0px 8px rgb(18, 83, 15);
-                transition: text-shadow 0.5s;
+                transition: all 0.5s;
             }
         }
 
@@ -343,10 +346,10 @@ $bg: rgb(255, 255, 255);
         width: 10%;
         height: 80%;
         opacity: 1;
-        transition: opacity 0.5s;
+        transition: all 0.5s;
         position: relative;
         color: rgba(100, 102, 100);
-        font-size: 22pt;
+        font-size: 5dvh;
 
         i {
             position: absolute;
