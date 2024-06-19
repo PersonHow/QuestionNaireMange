@@ -49,18 +49,22 @@ export default defineStore('survey', {
             this.surInfo = ""
         },
         setSearchValue(title, start, end) {
-            if (title !== "" || title !== undefined) {
-                this.searchObject.title = title;
+            if (!title) {
+                title = "";
             }
-            if (start !== "" || start !== undefined) {
-                this.searchObject.startTime = start;
+            if (!start) {
+                start = "";
             }
-            if (end !== "" || end !== undefined) {
-                this.searchObject.endTime = end;
+            if (!end) {
+                end = "";
             }
+            this.searchObject.title = title
+            this.searchObject.startTime = start
+            this.searchObject.endTime = end
             console.log(this.searchObject)
+            this.searchSurveyInfo(title, start, end)
         },
-        searchSurveyInfo() {
+        searchSurveyInfo(title, start, end) {
             fetch("http://localhost:8080/questionNaire/searchSurveyInfo", {
                 method: "POST",
                 headers: {
@@ -70,14 +74,15 @@ export default defineStore('survey', {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
-                    if (this.searchObject.startTime == "" && this.searchObject.title == "" && this.searchObject.endTime == "") {
-                        this.searchResult == "";
+                    if (!start  && !title  && !end) {
+                        this.searchResult = "";
                         
                     } else {
                         this.searchResult = data;
                     }
-                    console.log(this.searchResult)
+                    console.log("searchResult"+this.searchResult)
+                    console.log(`${title}${start}${end}`);
+                    console.log("searchResult"+typeof(this.searchResult))
                 })
                 .catch(err => console.log(err))
         }

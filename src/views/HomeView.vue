@@ -87,7 +87,8 @@ export default {
       this.dataNums = data.length
     },
     changePages(nowPage) {
-      if (this.searchResult !== '') {
+      console.log(this.searchResult); 
+      if (this.searchResult.surveyLists !== undefined ) {
         this.pagination(this.searchResult.surveyLists, nowPage)
 
       } else {
@@ -119,23 +120,26 @@ export default {
   },
   created() {
     this.showAll()
-    if (this.searchResult !== '') {
+    if (this.searchResult) {
+      console.log(this.searchResult);
       this.pagination(this.searchResult.surveyLists, 1)
     }
     // 當搜尋結果的 surveyLists 屬性不等於 undefined 時
     // 藉由比對資料量來控制顯示結果，這樣就不會跑版
     setInterval(() => {
       if (this.searchResult.surveyLists !== undefined) {
+        let changeItem = this.searchResult.surveyLists;
+        if(changeItem !== this.searchResult.surveyLists){
+          this.pagination(this.searchResult.surveyLists, 1)
+        }
         if (this.dataNums !== this.searchResult.surveyLists.length) {
           this.changePages(this.currentIndex)
         }
       }
     }, 200)
-
-    console.dir(window)
   },
   updated() {
-
+    
   }
 
 }
@@ -143,7 +147,7 @@ export default {
 
 <template>
   <div class="questionArea">
-    <div class="question" v-for="(item, index) in dataArr">
+    <div class="question" v-for="(item, index) in this.dataArr">
       <input type="checkbox" :class="{ 'showInput': this.show === true }">
       <div class="surveyBlock" @click="this.controlModal(item)">
         <span class="surveyTitle">SurveyNum:{{ item.surveyId }}</span>

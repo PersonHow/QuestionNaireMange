@@ -1,4 +1,4 @@
-<template >
+<template>
     <div class="closeArea" :class="{ 'showArea': this.show === true }">
         <div class="routeItem barIcon">
             <span class="barText">動態問券後台</span>
@@ -12,7 +12,8 @@
             <n-date-picker v-model:value="this.rangeStart" type="date" clearable class="dateSelect"
                 placeholder="Start Time" />
             <h1>&nbsp;~&nbsp;</h1>
-            <n-date-picker v-model:value="this.rangeEnd" type="date" clearable class="dateSelect" placeholder="End Time" />
+            <n-date-picker v-model:value="this.rangeEnd" type="date" clearable class="dateSelect"
+                placeholder="End Time" />
             <input type="text" placeholder="搜尋問卷標題" v-model="this.titleText">
             <i class="fa-solid fa-magnifying-glass" @click="this.doSearch()"></i>
         </div>
@@ -52,56 +53,44 @@ export default {
         doSearch() {
             let startText = ""
             let endText = ""
-            console.log(this.rangeEnd);
-            if (this.range !== null) {
-                let startTime = new Date(this.rangeStart)
-                let endTime = new Date(this.rangeEnd)
-                // 確保月份時間格式小於 10，補上 0 以便符合送入後端的 localDate 格式
-                let startMonth = "";
-                let endMonth = "";
-                if ((startTime.getMonth() + 1) < 10) {
-                    startMonth = `0${startTime.getMonth() + 1}`
-                } else {
-                    startMonth = startTime.getMonth() + 1
-                }
-                if ((endTime.getMonth() + 1) < 10) {
-                    endMonth = `0${endTime.getMonth() + 1}`
-                } else {
-                    endMonth = endTime.getMonth() + 1
-                }
 
-                // 確保日期時間格式小於 10，補上 0 以便符合送入後端的 localDate 格式
-                let startDate = "";
-                let endDate = "";
-                if (startTime.getDate() < 10) {
-                    startDate = `0${startTime.getDate()}`
-                } else {
-                    startDate = startTime.getDate();
-                }
-                if (endTime.getDate() < 10) {
-                    endDate = `0${endTime.getDate()}`
-                } else {
-                    endDate = endTime.getDate();
-                }
-
-                // 將時間格式組成後端需求
-                startText = `${startTime.getFullYear()}-${startMonth}-${startDate}`
-                endText = `${endTime.getFullYear()}-${endMonth}-${endDate}`
-                if (startText == endText || endText == 'NaN-NaN-NaN') {
-                    endText = ""
-                }
-                if (startText == 'NaN-NaN-NaN') {
-                    startText = ""
-                }
-                console.log(startText)
-                console.log(endText)
+            let startTime = new Date(this.rangeStart)
+            let endTime = new Date(this.rangeEnd)
+            // 確保月份時間格式小於 10，補上 0 以便符合送入後端的 localDate 格式
+            let startMonth = startTime.getMonth() + 1;
+            let endMonth = endTime.getMonth() + 1;
+            if (startMonth < 10) {
+                startMonth = `0${startTime.getMonth() + 1}`
             }
+            if (endMonth < 10) {
+                endMonth = `0${endTime.getMonth() + 1}`
+            }
+
+            // 確保日期時間格式小於 10，補上 0 以便符合送入後端的 localDate 格式
+            let startDate = startTime.getDate();
+            let endDate = endTime.getDate();
+            if (startDate < 10) {
+                startDate = `0${startTime.getDate()}`
+            }
+            if (endDate < 10) {
+                endDate = `0${endTime.getDate()}`
+            }
+
+            // 將時間格式組成後端需求
+            startText = `${startTime.getFullYear()}-${startMonth}-${startDate}`
+            endText = `${endTime.getFullYear()}-${endMonth}-${endDate}`
+            if (startText == endText || endText == 'NaN-NaN-NaN') {
+                endText = ""
+            }
+            if (startText == 'NaN-NaN-NaN') {
+                startText = ""
+            }
+
             if (this.rangeStart == "NaN-NaN-NaN" && this.rangeEnd == "NaN-NaN-NaN") {
                 startText = ""
                 endText = ""
             }
             this.setSearchValue(this.titleText, startText, endText)
-            this.searchSurveyInfo();
         },
         conDate() {
             const datePicker = document.querySelector(".dateSelect")
@@ -234,7 +223,7 @@ $bg: rgb(255, 255, 255);
             // 標題圖示
             font-size: 2.7dvw;
             text-shadow: none;
-            top:2dvh;
+            top: 2dvh;
             color: rgba(100, 102, 100);
             transition: all 0.5s;
         }
@@ -245,8 +234,6 @@ $bg: rgb(255, 255, 255);
             text-shadow: none;
             font-family: 'Noto Sans TC', sans-serif;
             color: rgba(100, 102, 100);
-
-
         }
 
         i {
@@ -308,7 +295,7 @@ $bg: rgb(255, 255, 255);
             left: 100%;
             transition: all 1s;
             cursor: pointer;
-            scale:1.5;
+            scale: 1.5;
 
             &:hover {
                 //  圖示相關動畫
